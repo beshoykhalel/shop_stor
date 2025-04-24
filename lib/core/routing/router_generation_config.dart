@@ -1,6 +1,9 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shop_stor/core/routing/app_routes.dart';
+import 'package:shop_stor/core/utils/service_locator.dart';
 import 'package:shop_stor/features/address_screen/address_screen.dart';
+import 'package:shop_stor/features/auth/cubit/auth_cubit.dart';
 import 'package:shop_stor/features/auth/login_screen.dart';
 import 'package:shop_stor/features/auth/register_screen.dart';
 import 'package:shop_stor/features/home_screen/home_screen.dart';
@@ -14,7 +17,10 @@ class RouterGenerationConfig {
       GoRoute(
         path: AppRoutes.loginScreen,
         name: AppRoutes.loginScreen,
-        builder: (context, state) => const LoginScreen(),
+        builder: (context, state) => BlocProvider(
+          create: (context) => sl<AuthCubit>(),
+          child: const LoginScreen(),
+        ),
       ),
       GoRoute(
         path: AppRoutes.regesterScreen,

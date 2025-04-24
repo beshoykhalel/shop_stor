@@ -3,10 +3,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shop_stor/core/networking/dio_helper.dart';
 import 'package:shop_stor/core/routing/router_generation_config.dart';
 import 'package:shop_stor/core/styling/them_data.dart';
+import 'package:shop_stor/core/utils/service_locator.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await DioHelper.initDio();
+  setupServiceLocator();
   runApp(const MyApp());
 }
 

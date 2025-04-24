@@ -11,5 +11,5 @@ class ApiEndpoints {
 
   static const String carts = "/carts";
 
-  static const String category = "/category";
+  static const String catProudects = "/category";
 }
