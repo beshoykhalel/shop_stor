@@ -2,6 +2,8 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:shop_stor/core/networking/api_endpoints.dart';
 import 'package:shop_stor/core/networking/dio_helper.dart';
+import 'package:shop_stor/core/utils/service_locator.dart';
+import 'package:shop_stor/core/utils/storage_helper.dart';
 import 'package:shop_stor/features/auth/models/login_response_model.dart';
 
 class AuthRepo {
@@ -17,7 +19,12 @@ class AuthRepo {
       if (response.statusCode == 200 || response.statusCode == 201) {
         LoginResponseModel loginResponseModel =
             LoginResponseModel.fromJson(response.data);
-        return Right(loginResponseModel);
+        if (loginResponseModel.token != null) {
+          await sl<StorageHelper>().saveToken(loginResponseModel.token!);
+          return Right(loginResponseModel);
+        } else {
+          return left("Token is null");
+        }
       } else {
         return Left(response.toString());
       }

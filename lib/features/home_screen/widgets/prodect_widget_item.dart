@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -26,8 +27,8 @@ class ProdectWidgetItem extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(10.r),
-              child: Image.asset(
-                image!,
+              child: CachedNetworkImage(
+                imageUrl: image!,
                 height: 150.h,
                 width: 150.w,
                 fit: BoxFit.cover,
@@ -36,6 +37,7 @@ class ProdectWidgetItem extends StatelessWidget {
             const HeightSpace(16),
             Text(
               title!,
+              maxLines: 1,
               style: AppStyles.black16w500style,
             ),
             const HeightSpace(3),

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:dartz/dartz.dart' as either;
 import 'package:flutter/material.dart';
@@ -11,14 +9,13 @@ import 'package:shop_stor/core/styling/app_colors.dart';
 import 'package:shop_stor/core/styling/app_styles.dart';
 import 'package:shop_stor/core/utils/animated_snak_dialog.dart';
 import 'package:shop_stor/core/utils/service_locator.dart';
+import 'package:shop_stor/core/utils/storage_helper.dart';
 import 'package:shop_stor/core/widgets/custom_text_field.dart';
 import 'package:shop_stor/core/widgets/loading_widget.dart';
 import 'package:shop_stor/core/widgets/primary_button_widget.dart';
 import 'package:shop_stor/core/widgets/spacing_widget.dart';
 import 'package:shop_stor/features/auth/cubit/auth_cubit.dart';
 import 'package:shop_stor/features/auth/cubit/auth_state.dart';
-import 'package:shop_stor/features/auth/models/login_response_model.dart';
-import 'package:shop_stor/features/auth/repo/auth_repo.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -31,6 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final formKey = GlobalKey<FormState>();
   late TextEditingController userNameController;
   late TextEditingController password;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -51,6 +49,11 @@ class _LoginScreenState extends State<LoginScreen> {
     // });
     userNameController = TextEditingController();
     password = TextEditingController();
+    sl<StorageHelper>().getToken().then((value) {
+      if (value != null && value.isNotEmpty) {
+        context.pushReplacementNamed(AppRoutes.mianScreen);
+      }
+    });
   }
 
   @override
@@ -66,6 +69,8 @@ class _LoginScreenState extends State<LoginScreen> {
             if (state is SuccessAuthState) {
               showAnimatedSnakDialog(context,
                   message: state.message, type: AnimatedSnackBarType.success);
+              // GoRouter.of(context).pushNamed(AppRoutes.mianScreen);
+              context.pushReplacementNamed(AppRoutes.mianScreen);
             }
           },
           builder: (context, state) {

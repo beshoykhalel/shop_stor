@@ -20,7 +20,7 @@ class DioHelper {
 
   getRequest({
     required String endPoint,
-    required Map<String, dynamic> query,
+    Map<String, dynamic>? query,
   }) async {
     try {
       final Response response =
@@ -28,7 +28,7 @@ class DioHelper {
 
       return response;
     } catch (e) {
-      log(e.toString());
+      rethrow;
     }
   }
 

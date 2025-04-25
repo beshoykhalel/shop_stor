@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shop_stor/core/routing/app_routes.dart';
@@ -7,12 +7,30 @@ import 'package:shop_stor/core/styling/app_assets.dart';
 import 'package:shop_stor/core/styling/app_colors.dart';
 import 'package:shop_stor/core/styling/app_styles.dart';
 import 'package:shop_stor/core/widgets/custom_text_field.dart';
+import 'package:shop_stor/core/widgets/loading_widget.dart';
 import 'package:shop_stor/core/widgets/spacing_widget.dart';
+import 'package:shop_stor/features/home_screen/cubit/categories_cubit.dart';
+import 'package:shop_stor/features/home_screen/cubit/categories_state.dart';
+import 'package:shop_stor/features/home_screen/cubit/proudect_cubit.dart';
+import 'package:shop_stor/features/home_screen/cubit/proudect_state.dart';
+import 'package:shop_stor/features/home_screen/models/proudects_model.dart';
 import 'package:shop_stor/features/home_screen/widgets/category_item_widget.dart';
 import 'package:shop_stor/features/home_screen/widgets/prodect_widget_item.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    context.read<ProudectCubit>().fetchProdects();
+    context.read<CategoriesCubit>().fetchCategories();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,94 +68,138 @@ class HomeScreen extends StatelessWidget {
             ],
           ),
           const HeightSpace(16),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: [
-                CategoryItemWidget(
-                  categoryName: "All",
-                ),
-                CategoryItemWidget(
-                  categoryName: "Tshirts",
-                ),
-                CategoryItemWidget(
-                  categoryName: "Jeans",
-                ),
-                CategoryItemWidget(
-                  categoryName: "Shoes",
-                ),
-                CategoryItemWidget(
-                  categoryName: "Tshirts",
-                ),
-                CategoryItemWidget(
-                  categoryName: "Tshirts",
-                ),
-                CategoryItemWidget(
-                  categoryName: "Tshirts",
-                ),
-              ],
-            ),
+          BlocBuilder<CategoriesCubit, CategoriesState>(
+            builder: (context, state) {
+              if (state is CategoriesLoaded) {
+                return SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                      children: state.categories.map((cat) {
+                    return CategoryItemWidget(categoryName: cat);
+                  }).toList()
+
+                      //  [
+                      //   CategoryItemWidget(
+                      //     categoryName: "All",
+                      //   ),
+                      //   CategoryItemWidget(
+                      //     categoryName: "Tshirts",
+                      //   ),
+                      //   CategoryItemWidget(
+                      //     categoryName: "Jeans",
+                      //   ),
+                      //   CategoryItemWidget(
+                      //     categoryName: "Shoes",
+                      //   ),
+                      //   CategoryItemWidget(
+                      //     categoryName: "Tshirts",
+                      //   ),
+                      //   CategoryItemWidget(
+                      //     categoryName: "Tshirts",
+                      //   ),
+                      //   CategoryItemWidget(
+                      //     categoryName: "Tshirts",
+                      //   ),
+                      // ],
+                      ),
+                );
+              }
+              return const SizedBox.shrink();
+            },
           ),
           const HeightSpace(16),
-          Expanded(
-            child: GridView(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 8.sp,
-                mainAxisSpacing: 16.sp,
-                childAspectRatio: 0.8,
-              ),
-              children: [
-                ProdectWidgetItem(
-                  image: AppAssets.shopShoz,
-                  title: 'T Shirt',
-                  price: "\$ 1,190",
-                  onTap: () {
-                    GoRouter.of(context).pushNamed(AppRoutes.prodectScreen);
-                  },
-                ),
-                ProdectWidgetItem(
-                  image: AppAssets.shopTeshert,
-                  title: 'T Shirt',
-                  price: "\$ 1,190",
-                  onTap: () {
-                    GoRouter.of(context).pushNamed(AppRoutes.prodectScreen);
-                  },
-                ),
-                ProdectWidgetItem(
-                  image: AppAssets.shopTeshert,
-                  title: 'T Shirt',
-                  price: "\$ 1,190",
-                  onTap: () {
-                    GoRouter.of(context).pushNamed(AppRoutes.prodectScreen);
-                  },
-                ),
-                ProdectWidgetItem(
-                  image: AppAssets.shopShoz,
-                  title: 'T Shirt',
-                  price: "\$ 1,190",
-                  onTap: () {
-                    GoRouter.of(context).pushNamed(AppRoutes.prodectScreen);
-                  },
-                ),
-                ProdectWidgetItem(
-                  image: AppAssets.shopShoz,
-                  title: 'T Shirt',
-                  price: "\$ 1,190",
-                  onTap: () {
-                    GoRouter.of(context).pushNamed(AppRoutes.prodectScreen);
-                  },
-                ),
-                ProdectWidgetItem(
-                  image: AppAssets.shopTeshert,
-                  title: 'T Shirt',
-                  price: "\$ 1,190",
-                  onTap: () {
-                    GoRouter.of(context).pushNamed(AppRoutes.prodectScreen);
-                  },
-                ),
-              ],
-            ),
+          BlocBuilder<ProudectCubit, ProudectState>(
+            builder: (context, state) {
+              if (state is ProudectLoading) {
+                return LoadingWidget(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.width * 0.5,
+                );
+              }
+              if (state is ProudectLoaded) {
+                List<ProdectsModel> proudects = state.proudects;
+                return Expanded(
+                  child: GridView(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 8.sp,
+                      mainAxisSpacing: 16.sp,
+                      childAspectRatio: 0.8,
+                    ),
+                    children: proudects.map((proudect) {
+                      return ProdectWidgetItem(
+                        title: proudect.title ?? "",
+                        price: proudect.price.toString(),
+                        onTap: () {
+                          GoRouter.of(context)
+                              .pushNamed(AppRoutes.prodectScreen);
+                        },
+                        image: proudect.image ?? "",
+                      );
+                    }).toList(),
+
+                    // [
+
+                    //   ProdectWidgetItem(
+                    //     image: AppAssets.shopShoz,
+                    //     title: 'T Shirt',
+                    //     price: "\$ 1,190",
+                    //     onTap: () {
+                    //       GoRouter.of(context)
+                    //           .pushNamed(AppRoutes.prodectScreen);
+                    //     },
+                    //   ),
+                    //   ProdectWidgetItem(
+                    //     image: AppAssets.shopTeshert,
+                    //     title: 'T Shirt',
+                    //     price: "\$ 1,190",
+                    //     onTap: () {
+                    //       GoRouter.of(context)
+                    //           .pushNamed(AppRoutes.prodectScreen);
+                    //     },
+                    //   ),
+                    //   ProdectWidgetItem(
+                    //     image: AppAssets.shopTeshert,
+                    //     title: 'T Shirt',
+                    //     price: "\$ 1,190",
+                    //     onTap: () {
+                    //       GoRouter.of(context)
+                    //           .pushNamed(AppRoutes.prodectScreen);
+                    //     },
+                    //   ),
+                    //   ProdectWidgetItem(
+                    //     image: AppAssets.shopShoz,
+                    //     title: 'T Shirt',
+                    //     price: "\$ 1,190",
+                    //     onTap: () {
+                    //       GoRouter.of(context)
+                    //           .pushNamed(AppRoutes.prodectScreen);
+                    //     },
+                    //   ),
+                    //   ProdectWidgetItem(
+                    //     image: AppAssets.shopShoz,
+                    //     title: 'T Shirt',
+                    //     price: "\$ 1,190",
+                    //     onTap: () {
+                    //       GoRouter.of(context)
+                    //           .pushNamed(AppRoutes.prodectScreen);
+                    //     },
+                    //   ),
+                    //   ProdectWidgetItem(
+                    //     image: AppAssets.shopTeshert,
+                    //     title: 'T Shirt',
+                    //     price: "\$ 1,190",
+                    //     onTap: () {
+                    //       GoRouter.of(context)
+                    //           .pushNamed(AppRoutes.prodectScreen);
+                    //     },
+                    //   ),
+                    // ],
+                  ),
+                );
+              }
+              return Text("there is an error");
+            },
           ),
         ],
       ),
