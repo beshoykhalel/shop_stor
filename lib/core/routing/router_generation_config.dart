@@ -7,6 +7,7 @@ import 'package:shop_stor/features/auth/cubit/auth_cubit.dart';
 import 'package:shop_stor/features/auth/login_screen.dart';
 import 'package:shop_stor/features/auth/register_screen.dart';
 import 'package:shop_stor/features/home_screen/home_screen.dart';
+import 'package:shop_stor/features/home_screen/models/proudects_model.dart';
 import 'package:shop_stor/features/main_screen/main_screen.dart';
 import 'package:shop_stor/features/prodect_screen/prodect_screen.dart';
 
@@ -40,7 +41,12 @@ class RouterGenerationConfig {
       GoRoute(
         path: AppRoutes.prodectScreen,
         name: AppRoutes.prodectScreen,
-        builder: (context, state) => const ProdectScreen(),
+        builder: (context, state) {
+          ProductsModel product = state.extra as ProductsModel;
+          return ProductScreen(
+            proudect: product,
+          );
+        },
       ),
       GoRoute(
         path: AppRoutes.addressScreen,

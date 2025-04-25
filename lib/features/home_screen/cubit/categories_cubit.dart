@@ -12,8 +12,8 @@ class CategoriesCubit extends Cubit<CategoriesState> {
     final Either<String, List<String>> res = await _homeRepo.getCategories();
     res.fold((error) {
       emit(CategoriesError(error));
-    }, (right) {
-      emit(CategoriesLoaded(right));
+    }, (categories) {
+      emit(CategoriesLoaded(categories));
     });
   }
 }

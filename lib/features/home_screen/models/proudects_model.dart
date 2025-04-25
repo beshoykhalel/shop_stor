@@ -2,10 +2,10 @@
 //
 //     final prodectModel = prodectModelFromJson(jsonString);
 
-List<ProdectsModel> prodectModelFromJson(str) =>
-    List<ProdectsModel>.from(str.map((x) => ProdectsModel.fromJson(x)));
+List<ProductsModel> prodectModelFromJson(str) =>
+    List<ProductsModel>.from(str.map((x) => ProductsModel.fromJson(x)));
 
-class ProdectsModel {
+class ProductsModel {
   int? id;
   String? title;
   double? price;
@@ -14,7 +14,7 @@ class ProdectsModel {
   String? image;
   Rating? rating;
 
-  ProdectsModel({
+  ProductsModel({
     this.id,
     this.title,
     this.price,
@@ -24,7 +24,7 @@ class ProdectsModel {
     this.rating,
   });
 
-  factory ProdectsModel.fromJson(Map<String, dynamic> json) => ProdectsModel(
+  factory ProductsModel.fromJson(Map<String, dynamic> json) => ProductsModel(
         id: json["id"],
         title: json["title"],
         price: json["price"]?.toDouble(),

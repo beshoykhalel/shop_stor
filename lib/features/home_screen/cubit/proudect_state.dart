@@ -7,7 +7,7 @@ class ProudectInitial extends ProudectState {}
 class ProudectLoading extends ProudectState {}
 
 class ProudectLoaded extends ProudectState {
-  List<ProdectsModel> proudects;
+  List<ProductsModel> proudects;
   ProudectLoaded(this.proudects);
 }
 

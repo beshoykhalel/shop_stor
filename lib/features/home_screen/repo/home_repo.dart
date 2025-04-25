@@ -7,13 +7,14 @@ import 'package:shop_stor/features/home_screen/models/proudects_model.dart';
 class HomeRepo {
   final DioHelper _dioHelper;
   HomeRepo(this._dioHelper);
-  Future<Either<String, List<ProdectsModel>>> getProudects() async {
+  Future<Either<String, List<ProductsModel>>> getProudects() async {
     try {
       final response = await _dioHelper.getRequest(
         endPoint: ApiEndpoints.products,
       );
       if (response.statusCode == 200) {
-        List<ProdectsModel> proudects = prodectModelFromJson(response.data);
+        List<ProductsModel> proudects = prodectModelFromJson(response.data);
+
         return Right(proudects);
       } else {
         return Left("Somthing went wrong");
@@ -23,14 +24,15 @@ class HomeRepo {
     }
   }
 
-  Future<Either<String, List<ProdectsModel>>> getProudectCategories(
+  Future<Either<String, List<ProductsModel>>> getProudectCategories(
       String catName) async {
     try {
       final response = await _dioHelper.getRequest(
-        endPoint: "${ApiEndpoints.catProudects}/$catName",
+        endPoint:
+            "${ApiEndpoints.products}/${ApiEndpoints.catProudects}/$catName",
       );
       if (response.statusCode == 200) {
-        List<ProdectsModel> proudects = prodectModelFromJson(response.data);
+        List<ProductsModel> proudects = prodectModelFromJson(response.data);
         return Right(proudects);
       } else {
         return Left("Somthing went wrong");
@@ -47,6 +49,7 @@ class HomeRepo {
       );
       if (response.statusCode == 200) {
         List<String> categories = categoryModelFromJson(response.data);
+        categories.insert(0, "All");
         return Right(categories);
       } else {
         return Left("Somthing went wrong");

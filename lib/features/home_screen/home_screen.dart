@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shop_stor/core/routing/app_routes.dart';
-import 'package:shop_stor/core/styling/app_assets.dart';
 import 'package:shop_stor/core/styling/app_colors.dart';
 import 'package:shop_stor/core/styling/app_styles.dart';
 import 'package:shop_stor/core/widgets/custom_text_field.dart';
@@ -25,6 +24,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  String selectCat = "All";
   @override
   void initState() {
     context.read<ProudectCubit>().fetchProdects();
@@ -75,7 +75,22 @@ class _HomeScreenState extends State<HomeScreen> {
                   scrollDirection: Axis.horizontal,
                   child: Row(
                       children: state.categories.map((cat) {
-                    return CategoryItemWidget(categoryName: cat);
+                    return CategoryItemWidget(
+                      categoryName: cat,
+                      isSelected: selectCat == cat ? true : false,
+                      onPress: () {
+                        setState(() {
+                          selectCat = cat;
+                          if (selectCat == "All") {
+                            context.read<ProudectCubit>().fetchProdects();
+                          } else {
+                            context
+                                .read<ProudectCubit>()
+                                .fetchProdectCategories(cat);
+                          }
+                        });
+                      },
+                    );
                   }).toList()
 
                       //  [
@@ -117,84 +132,94 @@ class _HomeScreenState extends State<HomeScreen> {
                 );
               }
               if (state is ProudectLoaded) {
-                List<ProdectsModel> proudects = state.proudects;
+                List<ProductsModel> proudects = state.proudects;
                 return Expanded(
-                  child: GridView(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 8.sp,
-                      mainAxisSpacing: 16.sp,
-                      childAspectRatio: 0.8,
+                  child: RefreshIndicator(
+                    color: AppColors.primaryColor,
+                    backgroundColor: Colors.white,
+                    onRefresh: () async {
+                      selectCat = "All";
+                      setState(() {});
+                      context.read<ProudectCubit>().fetchProdects();
+                    },
+                    child: GridView(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 8.sp,
+                        mainAxisSpacing: 16.sp,
+                        childAspectRatio: 0.8,
+                      ),
+                      children: proudects.map((proudect) {
+                        return ProdectWidgetItem(
+                          title: proudect.title ?? "",
+                          price: proudect.price.toString(),
+                          onTap: () {
+                            GoRouter.of(context).pushNamed(
+                                AppRoutes.prodectScreen,
+                                extra: proudect);
+                          },
+                          image: proudect.image ?? "",
+                        );
+                      }).toList(),
+
+                      // [
+
+                      //   ProdectWidgetItem(
+                      //     image: AppAssets.shopShoz,
+                      //     title: 'T Shirt',
+                      //     price: "\$ 1,190",
+                      //     onTap: () {
+                      //       GoRouter.of(context)
+                      //           .pushNamed(AppRoutes.prodectScreen);
+                      //     },
+                      //   ),
+                      //   ProdectWidgetItem(
+                      //     image: AppAssets.shopTeshert,
+                      //     title: 'T Shirt',
+                      //     price: "\$ 1,190",
+                      //     onTap: () {
+                      //       GoRouter.of(context)
+                      //           .pushNamed(AppRoutes.prodectScreen);
+                      //     },
+                      //   ),
+                      //   ProdectWidgetItem(
+                      //     image: AppAssets.shopTeshert,
+                      //     title: 'T Shirt',
+                      //     price: "\$ 1,190",
+                      //     onTap: () {
+                      //       GoRouter.of(context)
+                      //           .pushNamed(AppRoutes.prodectScreen);
+                      //     },
+                      //   ),
+                      //   ProdectWidgetItem(
+                      //     image: AppAssets.shopShoz,
+                      //     title: 'T Shirt',
+                      //     price: "\$ 1,190",
+                      //     onTap: () {
+                      //       GoRouter.of(context)
+                      //           .pushNamed(AppRoutes.prodectScreen);
+                      //     },
+                      //   ),
+                      //   ProdectWidgetItem(
+                      //     image: AppAssets.shopShoz,
+                      //     title: 'T Shirt',
+                      //     price: "\$ 1,190",
+                      //     onTap: () {
+                      //       GoRouter.of(context)
+                      //           .pushNamed(AppRoutes.prodectScreen);
+                      //     },
+                      //   ),
+                      //   ProdectWidgetItem(
+                      //     image: AppAssets.shopTeshert,
+                      //     title: 'T Shirt',
+                      //     price: "\$ 1,190",
+                      //     onTap: () {
+                      //       GoRouter.of(context)
+                      //           .pushNamed(AppRoutes.prodectScreen);
+                      //     },
+                      //   ),
+                      // ],
                     ),
-                    children: proudects.map((proudect) {
-                      return ProdectWidgetItem(
-                        title: proudect.title ?? "",
-                        price: proudect.price.toString(),
-                        onTap: () {
-                          GoRouter.of(context)
-                              .pushNamed(AppRoutes.prodectScreen);
-                        },
-                        image: proudect.image ?? "",
-                      );
-                    }).toList(),
-
-                    // [
-
-                    //   ProdectWidgetItem(
-                    //     image: AppAssets.shopShoz,
-                    //     title: 'T Shirt',
-                    //     price: "\$ 1,190",
-                    //     onTap: () {
-                    //       GoRouter.of(context)
-                    //           .pushNamed(AppRoutes.prodectScreen);
-                    //     },
-                    //   ),
-                    //   ProdectWidgetItem(
-                    //     image: AppAssets.shopTeshert,
-                    //     title: 'T Shirt',
-                    //     price: "\$ 1,190",
-                    //     onTap: () {
-                    //       GoRouter.of(context)
-                    //           .pushNamed(AppRoutes.prodectScreen);
-                    //     },
-                    //   ),
-                    //   ProdectWidgetItem(
-                    //     image: AppAssets.shopTeshert,
-                    //     title: 'T Shirt',
-                    //     price: "\$ 1,190",
-                    //     onTap: () {
-                    //       GoRouter.of(context)
-                    //           .pushNamed(AppRoutes.prodectScreen);
-                    //     },
-                    //   ),
-                    //   ProdectWidgetItem(
-                    //     image: AppAssets.shopShoz,
-                    //     title: 'T Shirt',
-                    //     price: "\$ 1,190",
-                    //     onTap: () {
-                    //       GoRouter.of(context)
-                    //           .pushNamed(AppRoutes.prodectScreen);
-                    //     },
-                    //   ),
-                    //   ProdectWidgetItem(
-                    //     image: AppAssets.shopShoz,
-                    //     title: 'T Shirt',
-                    //     price: "\$ 1,190",
-                    //     onTap: () {
-                    //       GoRouter.of(context)
-                    //           .pushNamed(AppRoutes.prodectScreen);
-                    //     },
-                    //   ),
-                    //   ProdectWidgetItem(
-                    //     image: AppAssets.shopTeshert,
-                    //     title: 'T Shirt',
-                    //     price: "\$ 1,190",
-                    //     onTap: () {
-                    //       GoRouter.of(context)
-                    //           .pushNamed(AppRoutes.prodectScreen);
-                    //     },
-                    //   ),
-                    // ],
                   ),
                 );
               }

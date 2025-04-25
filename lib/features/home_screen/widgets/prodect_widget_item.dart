@@ -31,7 +31,7 @@ class ProdectWidgetItem extends StatelessWidget {
                 imageUrl: image!,
                 height: 150.h,
                 width: 150.w,
-                fit: BoxFit.cover,
+                // fit: BoxFit.cover,
               ),
             ),
             const HeightSpace(16),
