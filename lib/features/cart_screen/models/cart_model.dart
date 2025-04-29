@@ -4,19 +4,19 @@
 
 import 'dart:convert';
 
-CartsModel cartsModelFromJson(String str) =>
-    CartsModel.fromJson(json.decode(str));
+CartModel cartsModelFromJson(String str) =>
+    CartModel.fromJson(json.decode(str));
 
-String cartsModelToJson(CartsModel data) => json.encode(data.toJson());
+String cartsModelToJson(CartModel data) => json.encode(data.toJson());
 
-class CartsModel {
+class CartModel {
   int? id;
   int? userId;
   DateTime? date;
   List<Product>? products;
   int? v;
 
-  CartsModel({
+  CartModel({
     this.id,
     this.userId,
     this.date,
@@ -24,7 +24,7 @@ class CartsModel {
     this.v,
   });
 
-  factory CartsModel.fromJson(Map<String, dynamic> json) => CartsModel(
+  factory CartModel.fromJson(Map<String, dynamic> json) => CartModel(
         id: json["id"],
         userId: json["userId"],
         date: json["date"] == null ? null : DateTime.parse(json["date"]),
