@@ -6,6 +6,7 @@ import 'package:shop_stor/features/address_screen/address_screen.dart';
 import 'package:shop_stor/features/auth/cubit/auth_cubit.dart';
 import 'package:shop_stor/features/auth/login_screen.dart';
 import 'package:shop_stor/features/auth/register_screen.dart';
+import 'package:shop_stor/features/cart_screen/cubit/cart_cubit.dart';
 import 'package:shop_stor/features/home_screen/home_screen.dart';
 import 'package:shop_stor/features/home_screen/models/proudects_model.dart';
 import 'package:shop_stor/features/main_screen/main_screen.dart';
@@ -31,7 +32,10 @@ class RouterGenerationConfig {
       GoRoute(
         path: AppRoutes.mianScreen,
         name: AppRoutes.mianScreen,
-        builder: (context, state) => const MainScreen(),
+        builder: (context, state) => BlocProvider(
+          create: (context) => sl<CartCubit>(),
+          child: const MainScreen(),
+        ),
       ),
       GoRoute(
         path: AppRoutes.homeScreen,
