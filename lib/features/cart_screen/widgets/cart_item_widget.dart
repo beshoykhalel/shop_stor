@@ -4,9 +4,11 @@ import 'package:shop_stor/core/styling/app_assets.dart';
 import 'package:shop_stor/core/styling/app_colors.dart';
 import 'package:shop_stor/core/styling/app_styles.dart';
 import 'package:shop_stor/core/widgets/spacing_widget.dart';
+import 'package:shop_stor/features/cart_screen/models/cart_model.dart';
 
 class CartItemWidget extends StatelessWidget {
-  const CartItemWidget({super.key});
+  final Product product;
+  const CartItemWidget({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +41,7 @@ class CartItemWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Regular Fit Slogan",
+                        "Product Item ${product.productId}",
                         style: AppStyles.black15BoldStyle,
                       ),
                       // const WidthSpace(50),

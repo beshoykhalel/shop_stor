@@ -15,7 +15,7 @@ class CartRepo {
         endPoint: ApiEndpoints.carts + "/user/2",
       );
       if (response.statusCode == 200) {
-        CartModel cartsModel = CartModel.fromJson(response.data);
+        CartModel cartsModel = CartModel.fromJson(response.data[0]);
         return Right(cartsModel);
       } else {
         return const Left("Error in Getting Cart");
