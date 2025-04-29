@@ -1,9 +1,11 @@
+import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shop_stor/core/styling/app_colors.dart';
 import 'package:shop_stor/core/styling/app_styles.dart';
+import 'package:shop_stor/core/utils/animated_snak_dialog.dart';
 import 'package:shop_stor/core/widgets/primary_button_widget.dart';
 import 'package:shop_stor/core/widgets/spacing_widget.dart';
 import 'package:shop_stor/features/cart_screen/cubit/cart_cubit.dart';
@@ -115,7 +117,15 @@ class ProductScreen extends StatelessWidget {
                           ],
                         ),
                         const WidthSpace(50),
-                        BlocBuilder<CartCubit, CartState>(
+                        BlocConsumer<CartCubit, CartState>(
+                          listener: (context, state) {
+                            if (state is SuccessAddingToCarts) {
+                              showAnimatedSnakDialog(context,
+                                  message:
+                                      "Product Add Successfully To Our Cart",
+                                  type: AnimatedSnackBarType.success);
+                            }
+                          },
                           builder: (context, state) {
                             if (state is AddingToCarts) {
                               return PrimaryButtonWidget(
