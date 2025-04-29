@@ -3,6 +3,8 @@ import "package:shop_stor/core/networking/dio_helper.dart";
 import "package:shop_stor/core/utils/storage_helper.dart";
 import "package:shop_stor/features/auth/cubit/auth_cubit.dart";
 import "package:shop_stor/features/auth/repo/auth_repo.dart";
+import "package:shop_stor/features/cart_screen/cubit/cart_cubit.dart";
+import "package:shop_stor/features/cart_screen/repo/cart_repo.dart";
 import "package:shop_stor/features/home_screen/cubit/categories_cubit.dart";
 import "package:shop_stor/features/home_screen/cubit/proudect_cubit.dart";
 import "package:shop_stor/features/home_screen/repo/home_repo.dart";
@@ -18,8 +20,10 @@ void setupServiceLocator() {
   // Repos
   sl.registerLazySingleton(() => AuthRepo(sl<DioHelper>()));
   sl.registerLazySingleton(() => HomeRepo(sl<DioHelper>()));
+  sl.registerLazySingleton(() => CartRepo(sl<DioHelper>()));
   // Cubit
   sl.registerFactory(() => AuthCubit(sl<AuthRepo>()));
   sl.registerFactory(() => ProudectCubit(sl<HomeRepo>()));
   sl.registerFactory(() => CategoriesCubit(sl<HomeRepo>()));
+  sl.registerFactory(() => CartCubit(sl<CartRepo>()));
 }
