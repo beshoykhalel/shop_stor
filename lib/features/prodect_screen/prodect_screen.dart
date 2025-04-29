@@ -1,10 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shop_stor/core/styling/app_colors.dart';
 import 'package:shop_stor/core/styling/app_styles.dart';
 import 'package:shop_stor/core/widgets/primary_button_widget.dart';
 import 'package:shop_stor/core/widgets/spacing_widget.dart';
+import 'package:shop_stor/features/cart_screen/cubit/cart_cubit.dart';
+import 'package:shop_stor/features/cart_screen/cubit/cart_state.dart';
 import 'package:shop_stor/features/home_screen/models/proudects_model.dart';
 
 class ProductScreen extends StatelessWidget {
@@ -112,17 +115,34 @@ class ProductScreen extends StatelessWidget {
                           ],
                         ),
                         const WidthSpace(50),
-                        PrimaryButtonWidget(
-                            onPressed: () {},
-                            width: 170.w,
-                            heithg: 54.h,
-                            icon: Icon(
-                              Icons.shopping_cart,
-                              size: 16.sp,
-                              color: AppColors.whiteColor,
-                            ),
-                            buttonText: "Add to Cart",
-                            buttonColor: AppColors.primaryColor)
+                        BlocBuilder<CartCubit, CartState>(
+                          builder: (context, state) {
+                            if (state is AddingToCarts) {
+                              return PrimaryButtonWidget(
+                                  onPressed: () {},
+                                  width: 170.w,
+                                  heithg: 54.h,
+                                  isLoading: true,
+                                  buttonText: "Add to Cart",
+                                  buttonColor: AppColors.primaryColor);
+                            }
+
+                            return PrimaryButtonWidget(
+                                onPressed: () {
+                                  context.read<CartCubit>().addingToCarts(
+                                      product: proudect, quantity: 1);
+                                },
+                                width: 170.w,
+                                heithg: 54.h,
+                                icon: Icon(
+                                  Icons.shopping_cart,
+                                  size: 16.sp,
+                                  color: AppColors.whiteColor,
+                                ),
+                                buttonText: "Add to Cart",
+                                buttonColor: AppColors.primaryColor);
+                          },
+                        )
                       ],
                     ),
                   ),
