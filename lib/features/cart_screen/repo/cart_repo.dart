@@ -17,7 +17,7 @@ class CartRepo {
         CartModel cartsModel = CartModel.fromJson(response.data);
         return Right(cartsModel);
       } else {
-        return Left(response.toString());
+        return const Left("Error in Getting Cart");
       }
     } catch (error) {
       if (error is DioException) {
