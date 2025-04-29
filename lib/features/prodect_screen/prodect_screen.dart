@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:shop_stor/core/styling/app_assets.dart';
 import 'package:shop_stor/core/styling/app_colors.dart';
 import 'package:shop_stor/core/styling/app_styles.dart';
 import 'package:shop_stor/core/widgets/primary_button_widget.dart';
