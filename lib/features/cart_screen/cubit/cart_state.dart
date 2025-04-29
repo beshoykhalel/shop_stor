@@ -2,6 +2,8 @@ import 'package:shop_stor/features/cart_screen/models/cart_model.dart';
 
 abstract class CartState {}
 
+class InitalCartState extends CartState {}
+
 class LoadindCarts extends CartState {}
 
 class SuccessGettingCarts extends CartState {
