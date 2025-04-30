@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shop_stor/core/routing/app_routes.dart';
 import 'package:shop_stor/core/styling/app_colors.dart';
@@ -142,83 +143,107 @@ class _HomeScreenState extends State<HomeScreen> {
                       setState(() {});
                       context.read<ProudectCubit>().fetchProdects();
                     },
-                    child: GridView(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 8.sp,
-                        mainAxisSpacing: 16.sp,
-                        childAspectRatio: 0.8,
+                    child: AnimationLimiter(
+                      child: GridView.builder(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 8.sp,
+                          mainAxisSpacing: 16.sp,
+                          childAspectRatio: 0.8,
+                        ),
+                        itemCount: proudects.length,
+                        itemBuilder: (context, index) {
+                          return AnimationConfiguration.staggeredList(
+                            position: index,
+                            duration: const Duration(milliseconds: 600),
+                            child: SlideAnimation(
+                              verticalOffset: 200.0,
+                              child: FadeInAnimation(
+                                child: ProdectWidgetItem(
+                                  title: proudects[index].title ?? "",
+                                  price: proudects[index].price.toString(),
+                                  onTap: () {
+                                    GoRouter.of(context).pushNamed(
+                                        AppRoutes.prodectScreen,
+                                        extra: proudects[index]);
+                                  },
+                                  image: proudects[index].image ?? "",
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                        // children: proudects.map((proudect) {
+                        //   return ProdectWidgetItem(
+                        //     title: proudect.title ?? "",
+                        //     price: proudect.price.toString(),
+                        //     onTap: () {
+                        //       GoRouter.of(context).pushNamed(
+                        //           AppRoutes.prodectScreen,
+                        //           extra: proudect);
+                        //     },
+                        //     image: proudect.image ?? "",
+                        //   );
+                        // }).toList(),
+
+                        // [
+
+                        //   ProdectWidgetItem(
+                        //     image: AppAssets.shopShoz,
+                        //     title: 'T Shirt',
+                        //     price: "\$ 1,190",
+                        //     onTap: () {
+                        //       GoRouter.of(context)
+                        //           .pushNamed(AppRoutes.prodectScreen);
+                        //     },
+                        //   ),
+                        //   ProdectWidgetItem(
+                        //     image: AppAssets.shopTeshert,
+                        //     title: 'T Shirt',
+                        //     price: "\$ 1,190",
+                        //     onTap: () {
+                        //       GoRouter.of(context)
+                        //           .pushNamed(AppRoutes.prodectScreen);
+                        //     },
+                        //   ),
+                        //   ProdectWidgetItem(
+                        //     image: AppAssets.shopTeshert,
+                        //     title: 'T Shirt',
+                        //     price: "\$ 1,190",
+                        //     onTap: () {
+                        //       GoRouter.of(context)
+                        //           .pushNamed(AppRoutes.prodectScreen);
+                        //     },
+                        //   ),
+                        //   ProdectWidgetItem(
+                        //     image: AppAssets.shopShoz,
+                        //     title: 'T Shirt',
+                        //     price: "\$ 1,190",
+                        //     onTap: () {
+                        //       GoRouter.of(context)
+                        //           .pushNamed(AppRoutes.prodectScreen);
+                        //     },
+                        //   ),
+                        //   ProdectWidgetItem(
+                        //     image: AppAssets.shopShoz,
+                        //     title: 'T Shirt',
+                        //     price: "\$ 1,190",
+                        //     onTap: () {
+                        //       GoRouter.of(context)
+                        //           .pushNamed(AppRoutes.prodectScreen);
+                        //     },
+                        //   ),
+                        //   ProdectWidgetItem(
+                        //     image: AppAssets.shopTeshert,
+                        //     title: 'T Shirt',
+                        //     price: "\$ 1,190",
+                        //     onTap: () {
+                        //       GoRouter.of(context)
+                        //           .pushNamed(AppRoutes.prodectScreen);
+                        //     },
+                        //   ),
+                        // ],
                       ),
-                      children: proudects.map((proudect) {
-                        return ProdectWidgetItem(
-                          title: proudect.title ?? "",
-                          price: proudect.price.toString(),
-                          onTap: () {
-                            GoRouter.of(context).pushNamed(
-                                AppRoutes.prodectScreen,
-                                extra: proudect);
-                          },
-                          image: proudect.image ?? "",
-                        );
-                      }).toList(),
-
-                      // [
-
-                      //   ProdectWidgetItem(
-                      //     image: AppAssets.shopShoz,
-                      //     title: 'T Shirt',
-                      //     price: "\$ 1,190",
-                      //     onTap: () {
-                      //       GoRouter.of(context)
-                      //           .pushNamed(AppRoutes.prodectScreen);
-                      //     },
-                      //   ),
-                      //   ProdectWidgetItem(
-                      //     image: AppAssets.shopTeshert,
-                      //     title: 'T Shirt',
-                      //     price: "\$ 1,190",
-                      //     onTap: () {
-                      //       GoRouter.of(context)
-                      //           .pushNamed(AppRoutes.prodectScreen);
-                      //     },
-                      //   ),
-                      //   ProdectWidgetItem(
-                      //     image: AppAssets.shopTeshert,
-                      //     title: 'T Shirt',
-                      //     price: "\$ 1,190",
-                      //     onTap: () {
-                      //       GoRouter.of(context)
-                      //           .pushNamed(AppRoutes.prodectScreen);
-                      //     },
-                      //   ),
-                      //   ProdectWidgetItem(
-                      //     image: AppAssets.shopShoz,
-                      //     title: 'T Shirt',
-                      //     price: "\$ 1,190",
-                      //     onTap: () {
-                      //       GoRouter.of(context)
-                      //           .pushNamed(AppRoutes.prodectScreen);
-                      //     },
-                      //   ),
-                      //   ProdectWidgetItem(
-                      //     image: AppAssets.shopShoz,
-                      //     title: 'T Shirt',
-                      //     price: "\$ 1,190",
-                      //     onTap: () {
-                      //       GoRouter.of(context)
-                      //           .pushNamed(AppRoutes.prodectScreen);
-                      //     },
-                      //   ),
-                      //   ProdectWidgetItem(
-                      //     image: AppAssets.shopTeshert,
-                      //     title: 'T Shirt',
-                      //     price: "\$ 1,190",
-                      //     onTap: () {
-                      //       GoRouter.of(context)
-                      //           .pushNamed(AppRoutes.prodectScreen);
-                      //     },
-                      //   ),
-                      // ],
                     ),
                   ),
                 );
