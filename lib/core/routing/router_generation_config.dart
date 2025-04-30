@@ -11,11 +11,17 @@ import 'package:shop_stor/features/home_screen/home_screen.dart';
 import 'package:shop_stor/features/home_screen/models/proudects_model.dart';
 import 'package:shop_stor/features/main_screen/main_screen.dart';
 import 'package:shop_stor/features/prodect_screen/prodect_screen.dart';
+import 'package:shop_stor/features/splash_screen/splash_screen.dart';
 
 class RouterGenerationConfig {
   static GoRouter goRoute = GoRouter(
-    initialLocation: AppRoutes.loginScreen,
+    initialLocation: AppRoutes.splashScreen,
     routes: [
+      GoRoute(
+        path: AppRoutes.splashScreen,
+        name: AppRoutes.splashScreen,
+        builder: (context, state) => const SplashScreen(),
+      ),
       GoRoute(
         path: AppRoutes.loginScreen,
         name: AppRoutes.loginScreen,
