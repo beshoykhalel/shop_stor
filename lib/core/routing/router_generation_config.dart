@@ -65,6 +65,7 @@ class RouterGenerationConfig {
         path: AppRoutes.addressScreen,
         name: AppRoutes.addressScreen,
         builder: (context, state) => const AddressScreen(),
+        // pageBuilder: GoTransitions.slide.toRight.withFade
       ),
       // GoRoute(
       //   path: AppRoutes.cartScreen,

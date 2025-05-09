@@ -42,7 +42,10 @@ class ProductScreen extends StatelessWidget {
                     height: 368.h,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10.r)),
-                    child: CachedNetworkImage(imageUrl: proudect.image ?? ""),
+                    child: Hero(
+                        tag: "product${proudect.title}",
+                        child:
+                            CachedNetworkImage(imageUrl: proudect.image ?? "")),
                   ),
                   const HeightSpace(12),
                   Text(

@@ -27,11 +27,14 @@ class ProdectWidgetItem extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(10.r),
-              child: CachedNetworkImage(
-                imageUrl: image!,
-                height: 150.h,
-                width: 150.w,
-                // fit: BoxFit.cover,
+              child: Hero(
+                tag: "product$title",
+                child: CachedNetworkImage(
+                  imageUrl: image!,
+                  height: 150.h,
+                  width: 150.w,
+                  // fit: BoxFit.cover,
+                ),
               ),
             ),
             const HeightSpace(16),
