@@ -1,5 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop_stor/core/utils/service_locator.dart';
+import 'package:shop_stor/core/utils/storage_helper.dart';
 import 'package:shop_stor/features/auth/cubit/auth_state.dart';
 import 'package:shop_stor/features/auth/models/login_response_model.dart';
 import 'package:shop_stor/features/auth/repo/auth_repo.dart';
@@ -18,5 +20,9 @@ class AuthCubit extends Cubit<AuthState> {
     }, (right) {
       emit(SuccessAuthState("Login Successfully"));
     });
+  }
+
+  void logout() {
+    sl<StorageHelper>().removeToken();
   }
 }

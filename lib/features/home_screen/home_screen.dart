@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:shop_stor/core/routing/app_routes.dart';
 import 'package:shop_stor/core/styling/app_colors.dart';
 import 'package:shop_stor/core/styling/app_styles.dart';
@@ -127,9 +128,27 @@ class _HomeScreenState extends State<HomeScreen> {
           BlocBuilder<ProudectCubit, ProudectState>(
             builder: (context, state) {
               if (state is ProudectLoading) {
-                return LoadingWidget(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.width * 0.5,
+                return Expanded(
+                  child: Shimmer.fromColors(
+                    baseColor: Colors.grey[300]!,
+                    highlightColor: Colors.grey[100]!,
+                    child: GridView.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 8.sp,
+                        mainAxisSpacing: 16.sp,
+                        childAspectRatio: 0.8,
+                      ),
+                      itemCount: 6,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          width: 150.w,
+                          height: 150.h,
+                          color: Colors.amber,
+                        );
+                      },
+                    ),
+                  ),
                 );
               }
               if (state is ProudectLoaded) {

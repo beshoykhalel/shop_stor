@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shop_stor/core/styling/app_colors.dart';
 import 'package:shop_stor/core/utils/service_locator.dart';
 import 'package:shop_stor/features/account_screen/account_screen.dart';
+import 'package:shop_stor/features/auth/cubit/auth_cubit.dart';
 import 'package:shop_stor/features/cart_screen/cart_screen.dart';
 import 'package:shop_stor/features/cart_screen/cubit/cart_cubit.dart';
 import 'package:shop_stor/features/home_screen/cubit/categories_cubit.dart';
@@ -33,7 +34,10 @@ class _MainScreenState extends State<MainScreen> {
       child: HomeScreen(),
     ),
     CartScreen(),
-    AccountScreen(),
+    BlocProvider(
+      create: (context) => sl<AuthCubit>(),
+      child: AccountScreen(),
+    ),
   ];
 
   @override
